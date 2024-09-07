@@ -1,5 +1,5 @@
 {
-  "name": "delboy1978uk/bone",
+  "name": "boneframework/bone",
   "description": "Bone Framework core application",
   "authors": [
     {
@@ -27,14 +27,18 @@
     "laminas/laminas-httphandlerrunner": "^2.10"
   },
   "require-dev": {
-    "codeception/codeception": "^5.1",
-    "codeception/module-asserts": "^3.0",
-    "roave/security-advisories": "dev-latest"
+    "roave/security-advisories": "dev-latest",
+    "delboy1978uk/dev-tools": "^1.0"
   },
   "autoload": {
     "psr-4": {
       "Bone\\": "src/",
       "BoneTest\\": "tests/unit"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "phpro/grumphp": false
     }
   }
 }
