@@ -107,7 +107,7 @@ class ApplicationPackage implements RegistrationInterface
     private function setupPackages(Container $c)
     {
         // set up the modules and vendor package modules
-        $c['consoleCommands'] = [];
+        $c['consoleCommands'] = $c->has('consoleCommands') ? $c->get('consoleCommands') : [];
         $packages = $c->get('packages');
         $this->addEntityPathsFromPackages($packages, $c);
 
