@@ -1,45 +1,30 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Bone;
 
 use Barnacle\Container;
 use Bone\Http\Middleware\Stack;
-use Bone\Router\Router;
 use Bone\Server\Environment;
 use Bone\Server\SiteConfig;
 use Del\SessionManager;
 use Laminas\Diactoros\ServerRequestFactory;
-use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class Application
 {
-    /** @var Container $container */
-    private $container;
 
-    /** @var string $configFolder */
-    private $configFolder = 'config';
+    private Container $container;
+    private string $configFolder = 'config';
+    private string $environment = 'production';
 
-    /** @var string $environment */
-    private $environment = 'production';
-
-    /**
-     *  There be nay feckin wi' constructors on board this ship
-     *  There be nay copyin' o' th'ship either
-     *  This ship is a singleton!
-     */
     private function __construct(){}
     private function __clone(){}
 
 
-    /**
-     *  Ahoy! There nay be boardin without yer configuration
-     *
-     * @param array $config
-     * @return Application
-     */
-    public static function ahoy()
+    public static function ahoy(): Application
     {
         static $inst = null;
 
@@ -84,15 +69,7 @@ class Application
         return $this->container;
     }
 
-
-    /**
-     *
-     * T' the high seas! Garrr!
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    public function setSail()
+    public function setSail(): bool
     {
         // load in the config and set up the dependency injection container
         $this->bootstrap();
@@ -106,26 +83,17 @@ class Application
         return true;
     }
 
-    /**
-     * @return Container
-     */
     public function getContainer(): Container
     {
         return $this->container;
     }
 
-    /**
-     * @param string $configFolder
-     */
-    public function setConfigFolder(string $configFolder)
+    public function setConfigFolder(string $configFolder): void
     {
         $this->configFolder = $configFolder;
     }
 
-    /**
-     * @param string $environment
-     */
-    public function setEnvironment(string $environment)
+    public function setEnvironment(string $environment): void
     {
         $this->environment = $environment;
     }

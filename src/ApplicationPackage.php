@@ -1,8 +1,8 @@
 <?php
 
-namespace Bone;
+declare(strict_types=1);
 
-use Barnacle\Container;
+namespace Bone;
 
 use Barnacle\RegistrationInterface;
 use Bone\Console\CommandRegistrationInterface;
@@ -10,6 +10,7 @@ use Bone\Console\ConsoleApplication;
 use Bone\Console\ConsolePackage;
 use Bone\Contracts\Container\ContainerInterface;
 use Bone\Contracts\Container\EntityRegistrationInterface;
+use Bone\Contracts\Container\RegistrationInterface as NewRegistrationInterface;
 use Bone\Db\DbPackage;
 use Bone\Firewall\FirewallPackage;
 use Bone\Http\GlobalMiddlewareRegistrationInterface;
@@ -29,30 +30,18 @@ use League\Plates\Template\Folder;
 use League\Plates\Template\Folders;
 use Laminas\I18n\Translator\Translator;
 use Psr\Http\Server\MiddlewareInterface;
+use function reset;
 
-class ApplicationPackage implements RegistrationInterface
+class ApplicationPackage implements NewRegistrationInterface
 {
-    /** @var array $config */
-    private $config;
+    private array $config;
+    private Router $router;
 
-    /** @var Router $router */
-    private $router;
-
-    /**
-     * ApplicationPackage constructor.
-     * @param array $config
-     * @param Router $router
-     */
     public function __construct(array $config)
     {
         $this->config = $config;
     }
 
-    /**
-     * @param Container $c
-     * @throws \Bone\Exception
-     * @throws \Exception
-     */
     public function addToContainer(ContainerInterface $c): void
     {
         $this->setConfigArray($c);
@@ -70,20 +59,14 @@ class ApplicationPackage implements RegistrationInterface
         $this->setupConsoleApp($c);
     }
 
-    /**
-     * @param Container $c
-     */
-    private function setConfigArray(ContainerInterface $c)
+    private function setConfigArray(ContainerInterface $c): void
     {
         foreach ($this->config as $key => $value) {
             $c[$key] = $value;
         }
     }
 
-    /**
-     * @param Container $c
-     */
-    private function setupViewEngine(ContainerInterface $c)
+    private function setupViewEngine(ContainerInterface $c): void
     {
         $package = new ViewPackage();
         $package->addToContainer($c);
@@ -91,17 +74,14 @@ class ApplicationPackage implements RegistrationInterface
         $this->addMiddlewaresToStack($package, $c);
     }
 
-    /**
-     * @param Container $c
-     */
-    private function setupRouter(ContainerInterface $c)
+    private function setupRouter(ContainerInterface $c): void
     {
         $package = new RouterPackage();
         $package->addToContainer($c);
         $this->router = $c->get(Router::class);
     }
 
-    private function setupPackages(ContainerInterface $c)
+    private function setupPackages(ContainerInterface $c): void
     {
         // set up the modules and vendor package modules
         $c['consoleCommands'] = $c->has('consoleCommands') ? $c->get('consoleCommands') : [];
@@ -165,10 +145,6 @@ class ApplicationPackage implements RegistrationInterface
         }
     }
 
-    /**
-     * @param GlobalMiddlewareRegistrationInterface $package
-     * @param Container $c
-     */
     private function addMiddlewaresToStack(GlobalMiddlewareRegistrationInterface $package, ContainerInterface $c): void
     {
         /** @var Stack $stack */
@@ -180,9 +156,6 @@ class ApplicationPackage implements RegistrationInterface
         }
     }
 
-    /**
-     * @param RegistrationInterface $package
-     */
     private function registerRoutes(RegistrationInterface $package, ContainerInterface $c): void
     {
         if ($package instanceof RouterConfigInterface) {
@@ -249,7 +222,7 @@ class ApplicationPackage implements RegistrationInterface
         }
     }
 
-    private function setupTranslator(ContainerInterface $c)
+    private function setupTranslator(ContainerInterface $c): void
     {
         $package = new I18nPackage();
         $package->addToContainer($c);
@@ -257,7 +230,7 @@ class ApplicationPackage implements RegistrationInterface
         $this->addMiddlewaresToStack($package, $c);
     }
 
-    private function setupPdoConnection(ContainerInterface $c)
+    private function setupPdoConnection(ContainerInterface $c): void
     {
         $package = new DbPackage();
         $package->addToContainer($c);
@@ -271,7 +244,7 @@ class ApplicationPackage implements RegistrationInterface
         $this->addMiddlewaresToStack($package, $c);
     }
 
-    private function  setupLogs(ContainerInterface $c)
+    private function  setupLogs(ContainerInterface $c): void
     {
         $package = new LogPackage();
         $package->addToContainer($c);
