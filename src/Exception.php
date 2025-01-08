@@ -97,3 +97,16 @@ class Exception extends \Exception
         };
     }
 }
+
+function error_get_last()
+{
+    if (getenv('TEST_ERROR') === 'true') {
+        return [
+            'type' => E_ERROR,
+            'message' => "Error in /some/file.php:123\nStack trace:\n#0 somefile.php:123\n#1 someotherfile.php:12",
+        ];
+    }
+
+    return \error_get_last();
+}
+
