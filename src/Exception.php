@@ -14,8 +14,12 @@ class Exception extends \Exception
 
     public static function getShutdownHandler(): Closure
     {
-        return function () {
+        return function (): void {
             $error = error_get_last();
+
+            if (!$error) {
+                return;
+            }
 
             if ($error['type'] === E_ERROR) {
                 $split = preg_split("/Stack\strace\:\n/", $error["message"]);
