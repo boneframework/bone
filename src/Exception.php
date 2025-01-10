@@ -22,26 +22,26 @@ class Exception extends \Exception
             }
 
             if ($error['type'] === E_ERROR) {
-                $split = preg_split("/Stack\strace\:\n/", $error["message"]);
-                $split2 = preg_split("/\sin\s/", $split[0]);
-                $message = $split2[0];
-                $where = $split2[1];
-                $lines = explode("\n", $split[1]);
-                $trace = '';
-                $row = 'odd';
-
-                foreach ($lines as $line) {
-                    $split = preg_split("/\s+/", $line, 2);
-                    $traceNo = $split[0];
-                    $lineInfo = $split[1];
-                    $trace .= "<tr class='$row'><td>$traceNo</td><td>$lineInfo</td></tr>";
-                    $row = $row === 'odd' ? 'even' : 'odd';
-                }
-
                 if (\getenv('APPLICATION_ENV') === 'production') {
                     $message = 'There was an error';
                     $where = 'We apologise for the inconvenience.';
                     $trace = '';
+                } else {
+                    $split = preg_split("/Stack\strace\:\n/", $error["message"]);
+                    $split2 = preg_split("/\sin\s/", $split[0]);
+                    $message = $split2[0];
+                    $where = $split2[1];
+                    $lines = explode("\n", $split[1]);
+                    $trace = '';
+                    $row = 'odd';
+
+                    foreach ($lines as $line) {
+                        $split = preg_split("/\s+/", $line, 2);
+                        $traceNo = $split[0];
+                        $lineInfo = $split[1];
+                        $trace .= "<tr class='$row'><td>$traceNo</td><td>$lineInfo</td></tr>";
+                        $row = $row === 'odd' ? 'even' : 'odd';
+                    }
                 }
 
                 $content = "
