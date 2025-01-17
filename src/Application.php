@@ -59,7 +59,7 @@ class Application
      */
     public function bootstrap(): Container
     {
-        \register_shutdown_function(Exception::getShutdownHandler());
+        \register_shutdown_function(ErrorHandler::getShutdownHandler());
         $env = new Environment($_SERVER);
         $config = $env->fetchConfig($this->configFolder, $this->environment);
         $config[Environment::class] = $env;

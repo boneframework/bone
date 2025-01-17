@@ -3,6 +3,7 @@
 
 namespace BoneTest\Exception;
 
+use Bone\ErrorHandler;
 use Bone\Exception;
 use Closure;
 use Codeception\Test\Unit;
@@ -14,7 +15,7 @@ class ExceptionTest extends Unit
     public function testShutdowError()
     {
         putenv('TEST_ERROR=true');
-        $handler = Exception::getShutdownHandler();
+        $handler = ErrorHandler::getShutdownHandler();
         $this->assertInstanceOf(Closure::class, $handler);
         ob_start();
         $handler();
@@ -29,7 +30,7 @@ class ExceptionTest extends Unit
         $env = getenv('APPLICATION_ENV');
         putenv('TEST_ERROR=true');
         putenv('APPLICATION_ENV=production');
-        $handler = Exception::getShutdownHandler();
+        $handler = ErrorHandler::getShutdownHandler();
         $this->assertInstanceOf(Closure::class, $handler);
         ob_start();
         $handler();
@@ -41,7 +42,7 @@ class ExceptionTest extends Unit
 
     public function testProductionError()
     {
-        $handler = Exception::getShutdownHandler();
+        $handler = ErrorHandler::getShutdownHandler();
         $this->assertInstanceOf(Closure::class, $handler);
         ob_start();
         $handler();
