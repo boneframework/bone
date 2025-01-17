@@ -20,7 +20,7 @@ class ExceptionTest extends Unit
         $handler();
         $output = ob_get_clean();
         $this->assertIsString($output);
-        $this->assertStringContainsString('<body id=\'error\'>', $output);
+        $this->assertStringContainsString("💀 Error\n", $output);
         putenv('TEST_ERROR=false');
     }
 
