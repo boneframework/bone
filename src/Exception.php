@@ -15,18 +15,20 @@ class Exception extends \Exception
     public static function getShutdownHandler(): Closure
     {
         return function (): void {
+            $message = '';
+            $where = '';
+            $trace = '';
             $error = error_get_last();
 
             if (!$error) {
                 return;
             }
 
-            if ($error['type'] === E_ERROR) {
-                if (\getenv('APPLICATION_ENV') === 'production') {
-                    $message = 'There was an error';
-                    $where = 'We apologise for the inconvenience.';
-                    $trace = '';
-                } else {
+            if (\in_array($error['type'], [E_ERROR, E_RECOVERABLE_ERROR, E_CORE_ERROR, E_USER_ERROR, E_COMPILE_ERROR])) {
+                $errorType = $error['type'];
+                $message = $error["message"];
+
+                if ($errorType === E_ERROR) {
                     $split = preg_split("/Stack\strace\:\n/", $error["message"]);
                     $split2 = preg_split("/\sin\s/", $split[0]);
                     $message = $split2[0];
@@ -39,12 +41,25 @@ class Exception extends \Exception
                         $split = preg_split("/\s+/", $line, 2);
                         $traceNo = $split[0];
                         $lineInfo = $split[1];
-                        $trace .= "<tr class='$row'><td>$traceNo</td><td>$lineInfo</td></tr>";
+
+                        if (isset($_SERVER['SERVER_NAME'])) {
+                            $trace .= "<tr class='$row'><td>$traceNo</td><td>$lineInfo</td></tr>";
+                        } else {
+                            $trace .= "$traceNo $lineInfo\n";
+                        }
+
                         $row = $row === 'odd' ? 'even' : 'odd';
                     }
                 }
 
-                $content = "
+                if (\getenv('APPLICATION_ENV') === 'production') {
+                    $message = 'There was an error';
+                    $where = 'We apologise for the inconvenience.';
+                    $trace = '';
+                }
+
+                if (isset($_SERVER['SERVER_NAME'])) {
+                    $content = "
 <html>
 <head>
     <style type='text/css'>
@@ -92,7 +107,15 @@ class Exception extends \Exception
 </body>
     
 </html>";
-                echo $content;
+                    echo $content;
+
+                    return;
+                }
+
+                echo "\n💀 Error\n\n";
+                echo $message . "\n\n";
+                echo $where . "\n\n";
+                echo $trace . "\n\n";
             }
         };
     }
