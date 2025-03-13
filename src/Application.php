@@ -11,18 +11,18 @@ use Bone\Server\SiteConfig;
 use Del\SessionManager;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class Application
 {
-
     private Container $container;
+    private ?ServerRequestInterface $globalRequest = null;
     private string $configFolder = 'config';
     private string $environment = 'production';
 
     private function __construct(){}
     private function __clone(){}
-
 
     public static function ahoy(): Application
     {
@@ -74,7 +74,7 @@ class Application
     {
         // load in the config and set up the dependency injection container
         $this->bootstrap();
-        $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
+        $request = $this->getGlobalRequest();
         /** @var RequestHandlerInterface $stack */
         $stack = $this->container->get(Stack::class);
         $response = $stack->handle($request);
@@ -97,5 +97,12 @@ class Application
     public function setEnvironment(string $environment): void
     {
         $this->environment = $environment;
+    }
+
+    public function getGlobalRequest(): ServerRequestInterface
+    {
+        return $this->globalRequest
+            ? $this->globalRequest
+            : ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
     }
 }
