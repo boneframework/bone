@@ -2,11 +2,9 @@
 
 use Barnacle\Container;
 use Bone\Application;
-use Bone\App\AppPackage;
 use Bone\BoneDoctrine\BoneDoctrinePackage;
 use Bone\Console\ConsoleApplication;
 use Bone\User\BoneUserPackage;
-use BoneTest\TestPackage\TestPackagePackage;
 use Codeception\Test\Unit;
 use Laminas\Diactoros\Response;
 

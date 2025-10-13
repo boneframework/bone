@@ -1,13 +1,9 @@
 <?php
 
 
-use Bone\Application;
-use Bone\App\AppPackage;
 use Bone\BoneDoctrine\BoneDoctrinePackage;
 use Bone\User\BoneUserPackage;
-use BoneTest\TestPackage\TestPackagePackage;
 use Codeception\Test\Unit;
-use Laminas\Diactoros\Response;
 
 class FormTest extends Unit
 {

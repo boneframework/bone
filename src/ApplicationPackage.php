@@ -10,6 +10,7 @@ use Bone\Console\ConsoleApplication;
 use Bone\Console\ConsolePackage;
 use Bone\Contracts\Container\ContainerInterface;
 use Bone\Contracts\Container\EntityRegistrationInterface;
+use Bone\Contracts\Container\FixtureProviderInterface;
 use Bone\Contracts\Container\RegistrationInterface as NewRegistrationInterface;
 use Bone\Db\DbPackage;
 use Bone\Firewall\FirewallPackage;
@@ -85,6 +86,7 @@ class ApplicationPackage implements NewRegistrationInterface
     {
         // set up the modules and vendor package modules
         $c['consoleCommands'] = $c->has('consoleCommands') ? $c->get('consoleCommands') : [];
+        $c['vendorFixtures'] = [];
         $packages = $c->get('packages');
         $this->addEntityPathsFromPackages($packages, $c);
 
@@ -107,6 +109,7 @@ class ApplicationPackage implements NewRegistrationInterface
         $this->registerTranslations($package, $c);
         $this->registerMiddleware($package, $c);
         $this->registerConsoleCommands($package, $c);
+        $this->registerFixtures($package, $c);
     }
 
     private function registerConsoleCommands(RegistrationInterface $package, ContainerInterface $c): void
@@ -122,6 +125,17 @@ class ApplicationPackage implements NewRegistrationInterface
         }
 
         $c['consoleCommands'] = $consoleCommands;
+    }
+
+    private function registerFixtures(RegistrationInterface $package, ContainerInterface $c): void
+    {
+        $fixtures = $c->get('vendorFixtures');
+
+        if ($package instanceof FixtureProviderInterface) {
+            $fixtures[get_class($package)] = $package->getFixtures();
+        }
+
+        $c['vendorFixtures'] = $fixtures;
     }
 
     private function registerMiddleware(RegistrationInterface $package, ContainerInterface $c): void
