@@ -89,6 +89,7 @@ class ApplicationPackage implements NewRegistrationInterface
         $c['vendorFixtures'] = [];
         $packages = $c->get('packages');
         $this->addEntityPathsFromPackages($packages, $c);
+        $this->registerFixturesFromPackages($packages, $c);
 
         reset($packages);
 
@@ -109,7 +110,6 @@ class ApplicationPackage implements NewRegistrationInterface
         $this->registerTranslations($package, $c);
         $this->registerMiddleware($package, $c);
         $this->registerConsoleCommands($package, $c);
-        $this->registerFixtures($package, $c);
     }
 
     private function registerConsoleCommands(RegistrationInterface $package, ContainerInterface $c): void
@@ -129,13 +129,11 @@ class ApplicationPackage implements NewRegistrationInterface
 
     private function registerFixtures(RegistrationInterface $package, ContainerInterface $c): void
     {
-        $fixtures = $c->get('vendorFixtures');
-
         if ($package instanceof FixtureProviderInterface) {
+            $fixtures = $c->get('vendorFixtures');
             $fixtures[get_class($package)] = $package->getFixtures();
+            $c['vendorFixtures'] = $fixtures;
         }
-
-        $c['vendorFixtures'] = $fixtures;
     }
 
     private function registerMiddleware(RegistrationInterface $package, ContainerInterface $c): void
@@ -218,6 +216,17 @@ class ApplicationPackage implements NewRegistrationInterface
     {
         $package = new ConsolePackage();
         $package->addToContainer($c);
+    }
+
+    private function registerFixturesFromPackages(array $packages, ContainerInterface $c): void
+    {
+        foreach ($packages as $packageName) {
+            if (class_exists($packageName)) {
+                /** @var RegistrationInterface $package */
+                $package = new $packageName();
+                $this->registerFixtures($package, $c);
+            }
+        }
     }
 
     private function addEntityPathsFromPackages(array $packages, ContainerInterface $c): void
