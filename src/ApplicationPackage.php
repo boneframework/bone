@@ -15,6 +15,7 @@ use Bone\Contracts\Container\RegistrationInterface;
 use Bone\Db\DbPackage;
 use Bone\Firewall\FirewallPackage;
 use Bone\Http\GlobalMiddlewareRegistrationInterface;
+use Bone\Http\Middleware\Cors;
 use Bone\Http\Middleware\Stack;
 use Bone\Http\MiddlewareRegistrationInterface;
 use Bone\I18n\I18nPackage;
@@ -291,7 +292,9 @@ class ApplicationPackage implements RegistrationInterface
 
     private function initMiddlewareStack(ContainerInterface $c): void
     {
-        $c[Stack::class] = new Stack($this->router);
+        $stack = $c[Stack::class] = new Stack($this->router);
+        $cors = new Cors();
+        $stack->addMiddleWare($cors);
     }
 
     private function setupMiddlewareStack(ContainerInterface $c): void
