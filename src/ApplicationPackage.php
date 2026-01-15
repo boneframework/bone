@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Bone;
 
-use Barnacle\RegistrationInterface;
+use Barnacle\RegistrationInterface as OldRegistrationInterface;
 use Bone\Console\CommandRegistrationInterface;
 use Bone\Console\ConsoleApplication;
 use Bone\Console\ConsolePackage;
 use Bone\Contracts\Container\ContainerInterface;
 use Bone\Contracts\Container\EntityRegistrationInterface;
-use Bone\Contracts\Container\RegistrationInterface as NewRegistrationInterface;
+use Bone\Contracts\Container\FixtureProviderInterface;
+use Bone\Contracts\Container\RegistrationInterface;
 use Bone\Db\DbPackage;
 use Bone\Firewall\FirewallPackage;
 use Bone\Http\GlobalMiddlewareRegistrationInterface;
@@ -32,7 +33,7 @@ use Laminas\I18n\Translator\Translator;
 use Psr\Http\Server\MiddlewareInterface;
 use function reset;
 
-class ApplicationPackage implements NewRegistrationInterface
+class ApplicationPackage implements RegistrationInterface
 {
     private array $config;
     private Router $router;
@@ -85,8 +86,10 @@ class ApplicationPackage implements NewRegistrationInterface
     {
         // set up the modules and vendor package modules
         $c['consoleCommands'] = $c->has('consoleCommands') ? $c->get('consoleCommands') : [];
+        $c['vendorFixtures'] = [];
         $packages = $c->get('packages');
         $this->addEntityPathsFromPackages($packages, $c);
+        $this->registerFixturesFromPackages($packages, $c);
 
         reset($packages);
 
@@ -99,7 +102,6 @@ class ApplicationPackage implements NewRegistrationInterface
 
     private function registerPackage(string $packageName, ContainerInterface $c): void
     {
-        /** @var RegistrationInterface $package */
         $package = new $packageName();
         $package->addToContainer($c);
         $this->registerRoutes($package, $c);
@@ -109,7 +111,7 @@ class ApplicationPackage implements NewRegistrationInterface
         $this->registerConsoleCommands($package, $c);
     }
 
-    private function registerConsoleCommands(RegistrationInterface $package, ContainerInterface $c): void
+    private function registerConsoleCommands(RegistrationInterface|OldRegistrationInterface $package, ContainerInterface $c): void
     {
         $consoleCommands = $c->get('consoleCommands');
 
@@ -124,7 +126,16 @@ class ApplicationPackage implements NewRegistrationInterface
         $c['consoleCommands'] = $consoleCommands;
     }
 
-    private function registerMiddleware(RegistrationInterface $package, ContainerInterface $c): void
+    private function registerFixtures(RegistrationInterface|OldRegistrationInterface $package, ContainerInterface $c): void
+    {
+        if ($package instanceof FixtureProviderInterface) {
+            $fixtures = $c->get('vendorFixtures');
+            $fixtures[get_class($package)] = $package->getFixtures();
+            $c['vendorFixtures'] = $fixtures;
+        }
+    }
+
+    private function registerMiddleware(RegistrationInterface|OldRegistrationInterface $package, ContainerInterface $c): void
     {
         if ($package instanceof MiddlewareRegistrationInterface) {
             $this->addMiddlewaresToContainer($package, $c);
@@ -156,14 +167,14 @@ class ApplicationPackage implements NewRegistrationInterface
         }
     }
 
-    private function registerRoutes(RegistrationInterface $package, ContainerInterface $c): void
+    private function registerRoutes(RegistrationInterface|OldRegistrationInterface $package, ContainerInterface $c): void
     {
         if ($package instanceof RouterConfigInterface) {
             $package->addRoutes($c, $this->router);
         }
     }
 
-    private function registerViews(RegistrationInterface $package, ContainerInterface $c): void
+    private function registerViews(RegistrationInterface|OldRegistrationInterface $package, ContainerInterface $c): void
     {
         if ($package instanceof ViewRegistrationInterface) {
             $views = $package->addViews();
@@ -181,7 +192,7 @@ class ApplicationPackage implements NewRegistrationInterface
         }
     }
 
-    private function registerTranslations(RegistrationInterface $package, ContainerInterface $c): void
+    private function registerTranslations(RegistrationInterface|OldRegistrationInterface $package, ContainerInterface $c): void
     {
         $i18n = $c->get('i18n');
         /** @var Translator $translator */
@@ -206,11 +217,20 @@ class ApplicationPackage implements NewRegistrationInterface
         $package->addToContainer($c);
     }
 
+    private function registerFixturesFromPackages(array $packages, ContainerInterface $c): void
+    {
+        foreach ($packages as $packageName) {
+            if (class_exists($packageName)) {
+                $package = new $packageName();
+                $this->registerFixtures($package, $c);
+            }
+        }
+    }
+
     private function addEntityPathsFromPackages(array $packages, ContainerInterface $c): void
     {
         foreach ($packages as $packageName) {
             if (class_exists($packageName)) {
-                /** @var RegistrationInterface $package */
                 $package = new $packageName();
 
                 if ($package instanceof EntityRegistrationInterface) {
@@ -252,7 +272,6 @@ class ApplicationPackage implements NewRegistrationInterface
 
     private function setupVendorViewOverrides(ContainerInterface $c): void
     {
-        /** @var ViewEngine $viewEngine */
         $viewEngine = $c->get(ViewEngine::class);
         $views = $c->get('views');
         $registeredViews = $viewEngine->getFolders();
@@ -265,7 +284,6 @@ class ApplicationPackage implements NewRegistrationInterface
     private function overrideViewFolder(string $view, string $folder, Folders $registeredViews): void
     {
         if ($registeredViews->exists($view)) {
-            /** @var Folder $currentFolder */
             $currentFolder = $registeredViews->get($view);
             $currentFolder->setPath($folder);
         }
