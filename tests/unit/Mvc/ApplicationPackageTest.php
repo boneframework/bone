@@ -16,16 +16,9 @@ use Laminas\I18n\Translator\Loader\Gettext;
 
 class ApplicationPackageTest extends Unit
 {
-    /**
-     * @var \UnitTester
-     */
-    protected $tester;
+    private I18nHandler $middleware;
 
-    /** @var I18nHandler $middleware */
-    private $middleware;
-
-
-    public function testPackage()
+    public function testPackage(): void
     {
         $container = new Container();
         $env = new Environment($_SERVER);
@@ -38,12 +31,6 @@ class ApplicationPackageTest extends Unit
         $this->assertInstanceOf(PDO::class, $pdo);
     }
 
-
-    /**
-     * @param $object
-     * @param string $method
-     * @throws ReflectionException
-     */
     private function runPrivateMethod($object, string $method, ...$args)
     {
         $mirror = new ReflectionClass($object);

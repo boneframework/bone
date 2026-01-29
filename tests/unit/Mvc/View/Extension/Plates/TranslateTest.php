@@ -2,21 +2,14 @@
 
 use Bone\I18n\View\Extension\Translate;
 use Bone\I18n\Service\TranslatorFactory;
+use Bone\Contracts\Service\TranslatorInterface;
 use Codeception\Test\Unit;
-use Laminas\I18n\Translator\Loader\Gettext;
-use Laminas\I18n\Translator\Translator;
 
 class TranslateTest extends Unit
 {
-    /**
-     * @var \UnitTester
-     */
-    protected $tester;
+    private TranslatorInterface $translator;
 
-    /** @var Translator */
-    private $translator;
-
-    public function _before()
+    public function _before(): void
     {
         $factory = new TranslatorFactory();
         $config = [
@@ -33,7 +26,7 @@ class TranslateTest extends Unit
     }
 
 
-    public function testTranslate()
+    public function testTranslate(): void
     {
         $translate = new Translate($this->translator);
         $greeting = $translate->translate('greeting');

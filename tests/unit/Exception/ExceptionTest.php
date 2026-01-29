@@ -12,7 +12,7 @@ use function ob_start;
 
 class ExceptionTest extends Unit
 {
-    public function testShutdowError()
+    public function testShutdowError(): void
     {
         putenv('TEST_ERROR=true');
         $handler = ErrorHandler::getShutdownHandler();
@@ -25,7 +25,7 @@ class ExceptionTest extends Unit
         putenv('TEST_ERROR=false');
     }
 
-    public function testNoShutdownError()
+    public function testNoShutdownError(): void
     {
         $env = getenv('APPLICATION_ENV');
         putenv('TEST_ERROR=true');
@@ -40,7 +40,7 @@ class ExceptionTest extends Unit
         putenv('TEST_ERROR=false');
     }
 
-    public function testProductionError()
+    public function testProductionError(): void
     {
         $handler = ErrorHandler::getShutdownHandler();
         $this->assertInstanceOf(Closure::class, $handler);
