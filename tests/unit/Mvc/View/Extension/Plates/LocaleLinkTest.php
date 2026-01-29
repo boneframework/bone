@@ -6,13 +6,7 @@ use Codeception\Test\Unit;
 
 class LocaleLinkTest extends Unit
 {
-    /**
-     * @var \UnitTester
-     */
-    protected $tester;
-
-
-    public function testLink()
+    public function testLink(): void
     {
         $locale = Locale::getDefault();
         $viewHelper = new LocaleLink(true);

@@ -3,16 +3,10 @@
 use Barnacle\Container;
 use Bone\ApplicationPackage;
 use Bone\Router\Router;
-use Bone\View\ViewEngine;
 use Bone\Server\SiteConfig;
 use Bone\Server\Environment;
-use Bone\I18n\Http\Middleware\I18nHandler;
-use Bone\I18n\Service\TranslatorFactory;
 use Codeception\Coverage\Subscriber\Local;
 use Codeception\Test\Unit;
-use Laminas\Diactoros\ServerRequest;
-use Laminas\Diactoros\Uri;
-use Laminas\I18n\Translator\Loader\Gettext;
 
 class ApplicationPackageTest extends Unit
 {

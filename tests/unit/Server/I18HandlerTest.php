@@ -6,7 +6,6 @@ use BoneTest\Http\RequestHandler\I18nTestHandler;
 use Codeception\Test\Unit;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Uri;
-use Laminas\I18n\Translator\Loader\Gettext;
 
 class I18HandlerTest extends Unit
 {
@@ -24,7 +23,6 @@ class I18HandlerTest extends Unit
         $config = [
             'enabled' => true,
             'translations_dir' => 'tests/_data/translations',
-            'type' => Gettext::class,
             'default_locale' => 'en_PI',
             'supported_locales' => ['en_PI', 'en_GB', 'nl_BE', 'fr_BE'],
             'date_format' => 'd/m/Y',

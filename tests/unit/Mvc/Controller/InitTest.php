@@ -16,12 +16,7 @@ use Del\SessionManager;
 
 class InitTest extends Unit
 {
-    /**
-     * @var \UnitTester
-     */
-    protected $tester;
-
-    public function testInit()
+    public function testInit(): void
     {
         $controller = new class extends Controller implements SessionAwareInterface {
             use HasSessionTrait;

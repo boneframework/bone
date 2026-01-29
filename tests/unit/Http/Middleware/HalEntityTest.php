@@ -15,7 +15,7 @@ class HalEntityTest extends Unit
 {
     private $fakeRequestHandler;
 
-    public function _before()
+    public function _before(): void
     {
         $this->fakeRequestHandler = new class implements RequestHandlerInterface {
             /**
@@ -29,10 +29,7 @@ class HalEntityTest extends Unit
         };
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function testProcesss()
+    public function testProcesss(): void
     {
         $request = new ServerRequest();
         $request = $request->withUri(new Uri('https://awesome.scot'));

@@ -2,11 +2,7 @@
 
 use Bone\Server\Environment;
 use Bone\Server\SiteConfig;
-use Bone\I18n\Service\TranslatorFactory;
 use Codeception\Test\Unit;
-use Laminas\Diactoros\ServerRequest;
-use Laminas\Diactoros\Uri;
-use Laminas\I18n\Translator\Loader\Gettext;
 
 class SiteConfigTest extends Unit
 {

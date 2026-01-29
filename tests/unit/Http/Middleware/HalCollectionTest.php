@@ -15,7 +15,7 @@ class HalCollectionTest extends Unit
 {
     private $fakeRequestHandler;
 
-    public function _before()
+    public function _before(): void
     {
         $this->fakeRequestHandler = new class implements RequestHandlerInterface {
             /**
@@ -43,10 +43,7 @@ class HalCollectionTest extends Unit
         };
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function testProcess()
+    public function testProcess(): void
     {
         $request = new ServerRequest([], [], new Uri('https://awesome.scot/skull'));
         $halEntityMiddleware = new HalCollection(3);
@@ -58,7 +55,7 @@ class HalCollectionTest extends Unit
         $this->assertEquals('{"_links":{"self":{"href":"https:\/\/awesome.scot\/skull"},"first":{"href":"https:\/\/awesome.scot\/skull"},"next":{"href":"https:\/\/awesome.scot\/skull?page=2"},"last":{"href":"https:\/\/awesome.scot\/skull?page=2"}},"_embedded":[{"id":1,"drink":"grog","_links":{"self":{"href":"https:\/\/awesome.scot\/skull\/1"}}},{"id":1,"yo ho ho":"bottle of rum","_links":{"self":{"href":"https:\/\/awesome.scot\/skull\/1"}}},{"id":3,"shiver me":"timbers","_links":{"self":{"href":"https:\/\/awesome.scot\/skull\/3"}}}],"total":4}', $json);
     }
 
-    public function testPage2()
+    public function testPage2(): void
     {
         $uri =  new Uri('https://awesome.scot/crossbones');
         $request = new ServerRequest([], [], $uri);
