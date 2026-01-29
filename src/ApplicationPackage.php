@@ -12,6 +12,7 @@ use Bone\Contracts\Container\ContainerInterface;
 use Bone\Contracts\Container\EntityRegistrationInterface;
 use Bone\Contracts\Container\FixtureProviderInterface;
 use Bone\Contracts\Container\RegistrationInterface;
+use Bone\Contracts\Service\TranslatorInterface;
 use Bone\Db\DbPackage;
 use Bone\Firewall\FirewallPackage;
 use Bone\Http\GlobalMiddlewareRegistrationInterface;
@@ -30,7 +31,6 @@ use Bone\View\ViewPackage;
 use Bone\View\ViewRegistrationInterface;
 use League\Plates\Template\Folder;
 use League\Plates\Template\Folders;
-use Laminas\I18n\Translator\Translator;
 use Psr\Http\Server\MiddlewareInterface;
 use function reset;
 
@@ -196,8 +196,8 @@ class ApplicationPackage implements RegistrationInterface
     private function registerTranslations(RegistrationInterface|OldRegistrationInterface $package, ContainerInterface $c): void
     {
         $i18n = $c->get('i18n');
-        /** @var Translator $translator */
-        $translator = $c->get(Translator::class);
+        /** @var TranslatorInterface $translator */
+        $translator = $c->get(TranslatorInterface::class);
 
         if ($package instanceof I18nRegistrationInterface) {
             foreach ($i18n['supported_locales'] as $locale) {
