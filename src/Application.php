@@ -47,7 +47,8 @@ class Application
         $session = SessionManager::getInstance();
 
         if (isset($_SERVER['SERVER_NAME'])) {
-            SessionManager::sessionStart('app');
+            $sessionSettings = $this->container->has('session') ? $this->container->get('session') : 0;
+            SessionManager::sessionStart('app', $sessionSettings);
         }
 
         $this->container[SessionManager::class] = $session;
