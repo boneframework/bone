@@ -1,6 +1,6 @@
 <?php
 
-use BoneTest\TestPackage\TestPackagePackage;
+use Tests\TestPackage\TestPackagePackage;
 
 return [
     'packages' => [

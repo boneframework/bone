@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+
+namespace Tests;
 
 use Barnacle\Container;
 use Bone\Application;
-use Bone\BoneDoctrine\BoneDoctrinePackage;
 use Bone\Console\ConsoleApplication;
-use Bone\User\BoneUserPackage;
 use Codeception\Test\Unit;
 use Laminas\Diactoros\Response;
 

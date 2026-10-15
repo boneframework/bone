@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace BoneTest\Http\Middleware;
+namespace Tests\Http\Middleware;
 
 use Bone\Http\Middleware\HalCollection;
 use Codeception\Test\Unit;

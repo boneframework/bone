@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BoneTest\TestPackage\Controller;
+namespace Tests\TestPackage\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

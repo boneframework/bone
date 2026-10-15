@@ -1,9 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
-use Bone\I18n\View\Extension\Translate;
-use Bone\I18n\Service\TranslatorFactory;
+namespace Tests\View\Extension\Plates;
+
 use Bone\Contracts\Service\TranslatorInterface;
+use Bone\I18n\Service\TranslatorFactory;
+use Bone\I18n\View\Extension\Translate;
 use Codeception\Test\Unit;
+use Gettext;
 
 class TranslateTest extends Unit
 {
@@ -20,7 +23,7 @@ class TranslateTest extends Unit
             'supported_locales' => ['en_PI', 'en_GB', 'nl_BE', 'fr_BE'],
             'date_format' => 'd/m/Y',
         ];
-        Locale::setDefault($config['default_locale']);
+        \Locale::setDefault($config['default_locale']);
         $translator = $factory->createTranslator($config);
         $this->translator = $translator;
     }
@@ -31,7 +34,7 @@ class TranslateTest extends Unit
         $translate = new Translate($this->translator);
         $greeting = $translate->translate('greeting');
         $this->assertEquals('Hello', $greeting);
-        Locale::setDefault('nl_BE');
+        \Locale::setDefault('nl_BE');
         $greeting = $translate->translate('greeting');
         $this->assertEquals('Hoi', $greeting);
     }

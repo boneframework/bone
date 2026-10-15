@@ -1,4 +1,6 @@
-<?php
+<?php declare(strict_types=1);
+
+namespace Tests\Server;
 
 use Bone\Server\Environment;
 use Bone\Server\SiteConfig;

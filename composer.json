@@ -34,7 +34,7 @@
   "autoload": {
     "psr-4": {
       "Bone\\": "src/",
-      "BoneTest\\": "tests/unit"
+      "Tests\\": "tests/unit"
     }
   },
   "config": {

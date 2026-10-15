@@ -1,4 +1,6 @@
-<?php
+<?php declare(strict_types=1);
+
+namespace Tests\Service;
 
 use Bone\Log\LoggerFactory;
 use Codeception\Test\Unit;

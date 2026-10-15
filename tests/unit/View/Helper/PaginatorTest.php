@@ -1,4 +1,6 @@
-<?php
+<?php declare(strict_types=1);
+
+namespace Tests\View\Helper;
 
 use Bone\View\Helper\Exception\PaginatorException;
 use Bone\View\Helper\Paginator;
@@ -6,9 +8,6 @@ use Codeception\Test\Unit;
 
 class PaginatorTest extends Unit
 {
-    /**
-     * @throws Exception
-     */
     public function testCreatePager()
     {
         $pager = new Paginator();
@@ -20,9 +19,6 @@ class PaginatorTest extends Unit
         $this->assertEquals('<nav><ul class="pagination"><li class="page-item"><a class="page-link"  href ="https://bottlesofrum.com/cannons/1"><i class="fa fa-fast-backward"></i></a></li><li class="page-item"><a class="page-link"  href ="https://bottlesofrum.com/cannons/1"><i class="fa fa-backward"></i></a></li><li class="page-item "><a class="page-link" href="https://bottlesofrum.com/cannons/1">1</a></li><li class="page-item  active" aria-current="page"><a class="page-link" href="#">2</a></li><li class="page-item "><a class="page-link" href="https://bottlesofrum.com/cannons/3">3</a></li><li class="page-item"><a class="page-link"  href ="https://bottlesofrum.com/cannons/3"><i class="fa fa-forward"></i></i></a></li><li class="page-item"><a class="page-link"  href ="https://bottlesofrum.com/cannons/5"><i class="fa fa-fast-forward"></i></i></a></li></ul></nav>', $pager->render());
     }
 
-    /**
-     * @throws Exception
-     */
     public function testCreatePagerThrowsExceptionWithoutPageTotal()
     {
         $this->expectException(PaginatorException::class);
@@ -30,9 +26,6 @@ class PaginatorTest extends Unit
         $pager->render();
     }
 
-    /**
-     * @throws Exception
-     */
     public function testCreatePagerThrowsExceptionWithoutUrl()
     {
         $this->expectException(PaginatorException::class);
@@ -41,10 +34,6 @@ class PaginatorTest extends Unit
         $pager->render();
     }
 
-
-    /**
-     * @throws Exception
-     */
     public function testPagerSize()
     {
         $pager = new Paginator();
@@ -62,9 +51,6 @@ class PaginatorTest extends Unit
     }
 
 
-    /**
-     * @throws Exception
-     */
     public function testRender()
     {
         $pager = new Paginator();
@@ -77,10 +63,6 @@ class PaginatorTest extends Unit
         $this->assertEquals('<nav><ul class="pagination"><li class="page-item"><a class="page-link"  href ="https://awesome.scot/rendertest/1"><i class="fa fa-fast-backward"></i></a></li><li class="page-item"><a class="page-link"  href ="https://awesome.scot/rendertest/2"><i class="fa fa-backward"></i></a></li><li class="page-item "><a class="page-link" href="https://awesome.scot/rendertest/2">2</a></li><li class="page-item  active" aria-current="page"><a class="page-link" href="#">3</a></li><li class="page-item "><a class="page-link" href="https://awesome.scot/rendertest/4">4</a></li><li class="page-item"><a class="page-link"  href ="https://awesome.scot/rendertest/4"><i class="fa fa-forward"></i></i></a></li><li class="page-item"><a class="page-link"  href ="https://awesome.scot/rendertest/6"><i class="fa fa-fast-forward"></i></i></a></li></ul></nav>', $html);
     }
 
-
-    /**
-     * @throws Exception
-     */
     public function testRenderLastPage()
     {
         $pager = new Paginator();
@@ -93,9 +75,6 @@ class PaginatorTest extends Unit
         $this->assertEquals('<nav><ul class="pagination"><li class="page-item"><a class="page-link"  href ="https://awesome.scot/renderagain/1"><i class="fa fa-fast-backward"></i></a></li><li class="page-item"><a class="page-link"  href ="https://awesome.scot/renderagain/5"><i class="fa fa-backward"></i></a></li><li class="page-item "><a class="page-link" href="https://awesome.scot/renderagain/4">4</a></li><li class="page-item "><a class="page-link" href="https://awesome.scot/renderagain/5">5</a></li><li class="page-item  active" aria-current="page"><a class="page-link" href="#">6</a></li><li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-forward disabled"></i></a></li><li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-fast-forward disabled"></i></a></li></ul></nav>', $html);
     }
 
-    /**
-     * @throws Exception
-     */
     public function testRenderFirstPage()
     {
         $pager = new Paginator();
@@ -108,9 +87,7 @@ class PaginatorTest extends Unit
         $this->assertEquals('<nav><ul class="pagination"><li class="page-item disabled"><a class="page-link"  href ="#"><i class="fa fa-fast-backward disabled"></i></a></li><li class="page-item disabled"><a class="page-link"  href ="#"><i class="fa fa-backward disabled"></i></a></li><li class="page-item  active" aria-current="page"><a class="page-link" href="#">1</a></li><li class="page-item "><a class="page-link" href="https://awesome.scot/first/2">2</a></li><li class="page-item "><a class="page-link" href="https://awesome.scot/first/3">3</a></li><li class="page-item"><a class="page-link"  href ="https://awesome.scot/first/2"><i class="fa fa-forward"></i></i></a></li><li class="page-item"><a class="page-link"  href ="https://awesome.scot/first/6"><i class="fa fa-fast-forward"></i></i></a></li></ul></nav>', $html);
     }
 
-    /**
-     * @throws Exception
-     */
+
     public function testRenderLowNumberOfPages()
     {
         $pager = new Paginator();
@@ -123,9 +100,6 @@ class PaginatorTest extends Unit
         $this->assertEquals('<nav><ul class="pagination"><li class="page-item disabled"><a class="page-link"  href ="#"><i class="fa fa-fast-backward disabled"></i></a></li><li class="page-item disabled"><a class="page-link"  href ="#"><i class="fa fa-backward disabled"></i></a></li><li class="page-item  active" aria-current="page"><a class="page-link" href="#">1</a></li><li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-forward disabled"></i></a></li><li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-fast-forward disabled"></i></a></li></ul></nav>', $html);
     }
 
-    /**
-     * @throws Exception
-     */
     public function testCalculateStartsAtPageOne()
     {
         $pager = new Paginator();

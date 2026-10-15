@@ -1,7 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-
-namespace BoneTest\Exception;
+namespace Tests\Exception;
 
 use Bone\ErrorHandler;
 use Bone\Exception;

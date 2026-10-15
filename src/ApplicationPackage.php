@@ -29,7 +29,6 @@ use Bone\View\ViewEngine;
 use Bone\I18n\Service\TranslatorFactory;
 use Bone\View\ViewPackage;
 use Bone\View\ViewRegistrationInterface;
-use League\Plates\Template\Folder;
 use League\Plates\Template\Folders;
 use Psr\Http\Server\MiddlewareInterface;
 use function reset;

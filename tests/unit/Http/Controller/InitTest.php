@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace BoneTest\Mvc\Controller;
+namespace Tests\Http\Controller;
 
 use Barnacle\Container;
 use Bone\Controller\Controller;

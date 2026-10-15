@@ -1,4 +1,6 @@
-<?php
+<?php declare(strict_types=1);
+
+namespace Tests;
 
 use Bone\Console\ConsoleApplication;
 use Codeception\Test\Unit;

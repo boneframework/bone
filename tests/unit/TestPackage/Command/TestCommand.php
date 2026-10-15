@@ -1,6 +1,6 @@
 <?php
 
-namespace BoneTest\TestPackage\Command;
+namespace Tests\TestPackage\Command;
 
 use Symfony\Component\Console\Command\Command;
 

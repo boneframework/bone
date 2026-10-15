@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace BoneTest\TestPackage\Controller;
+namespace Tests\TestPackage\Controller;
 
 use Bone\View\ViewEngine;
 use Exception;

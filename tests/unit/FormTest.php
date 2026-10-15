@@ -1,8 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
+namespace Tests;
 
-use Bone\BoneDoctrine\BoneDoctrinePackage;
-use Bone\User\BoneUserPackage;
 use Bone\Contracts\Service\TranslatorInterface;
 use Codeception\Test\Unit;
 

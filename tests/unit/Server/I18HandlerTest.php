@@ -1,8 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+
+namespace Tests\Server;
 
 use Bone\I18n\Http\Middleware\I18nMiddleware;
 use Bone\I18n\Service\TranslatorFactory;
-use BoneTest\Http\RequestHandler\I18nTestHandler;
+use Tests\Http\RequestHandler\I18nTestHandler;
 use Codeception\Test\Unit;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Uri;
@@ -37,12 +39,12 @@ class I18HandlerTest extends Unit
      */
     public function testLocale()
     {
-        $locale = Locale::getDefault();
+        $locale = \Locale::getDefault();
         $request = new ServerRequest([], [], new Uri('https://awesome.scot/en_PI/somepage'));
         $handler = new I18nTestHandler();
         $response = $this->middleware->process($request, $handler);
         $this->assertEquals('locale is en_PI and path is /somepage', $response->getBody()->getContents());
-        $newLocale = Locale::getDefault();
+        $newLocale = \Locale::getDefault();
         $this->assertTrue($locale !== $newLocale);
         $this->assertEquals('en_PI', $newLocale);
     }
@@ -52,12 +54,12 @@ class I18HandlerTest extends Unit
      */
     public function testAnotherLocale()
     {
-        $locale = Locale::getDefault();
+        $locale = \Locale::getDefault();
         $request = new ServerRequest([], [], new Uri('https://awesome.scot/en_GB/somepage'));
         $handler = new I18nTestHandler();
         $response = $this->middleware->process($request, $handler);
         $this->assertEquals('locale is en_GB and path is /somepage', $response->getBody()->getContents());
-        $newLocale = Locale::getDefault();
+        $newLocale = \Locale::getDefault();
         $this->assertTrue($locale !== $newLocale);
         $this->assertEquals('en_GB', $newLocale);
     }
@@ -71,7 +73,7 @@ class I18HandlerTest extends Unit
         $handler = new I18nTestHandler();
         $response = $this->middleware->process($request, $handler);
         $this->assertEquals('locale is en_PI and path is /somepage', $response->getBody()->getContents());
-        $newLocale = Locale::getDefault();
+        $newLocale = \Locale::getDefault();
         $this->assertTrue('en_PI' === $newLocale);
     }
 
@@ -84,7 +86,7 @@ class I18HandlerTest extends Unit
         $handler = new I18nTestHandler();
         $response = $this->middleware->process($request, $handler);
         $this->assertEquals('locale is en_PI and path is /somepage', $response->getBody()->getContents());
-        $newLocale = Locale::getDefault();
+        $newLocale = \Locale::getDefault();
         $this->assertEquals('en_PI', $newLocale);
     }
 }

@@ -1,4 +1,6 @@
-<?php
+<?php declare(strict_types=1);
+
+namespace Tests\Traits;
 
 use Bone\View\Traits\HasViewTrait;
 use Bone\View\ViewEngine;

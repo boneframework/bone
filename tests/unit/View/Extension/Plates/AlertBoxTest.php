@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace BoneTest\Mvc\View\Extension\Plates;
+namespace Tests\View\Extension\Plates;
 
 use Bone\View\Extension\Plates\AlertBox;
 use Codeception\Test\Unit;

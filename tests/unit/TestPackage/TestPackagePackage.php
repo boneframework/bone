@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BoneTest\TestPackage;
+namespace Tests\TestPackage;
 
 use Barnacle\Container;
 use Barnacle\EntityRegistrationInterface;
@@ -16,9 +16,9 @@ use Bone\Router\RouterConfigInterface;
 use Bone\View\Extension\Plates\AlertBox;
 use Bone\View\ViewEngine;
 use Bone\View\ViewRegistrationInterface;
-use BoneTest\TestPackage\Command\TestCommand;
-use BoneTest\TestPackage\Controller\TestPackageApiController;
-use BoneTest\TestPackage\Controller\TestPackageController;
+use Tests\TestPackage\Command\TestCommand;
+use Tests\TestPackage\Controller\TestPackageApiController;
+use Tests\TestPackage\Controller\TestPackageController;
 use League\Plates\Engine;
 use League\Plates\Extension\ExtensionInterface;
 use League\Route\RouteGroup;
