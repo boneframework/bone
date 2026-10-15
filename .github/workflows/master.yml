@@ -53,7 +53,7 @@ jobs:
         run: XDEBUG_MODE=coverage vendor/bin/codecept run unit --coverage-xml --env=ci
 
       - name: Download Scrutinizer ocular.phar
-        run: composer require scrutinizer/ocular -W  --prefer-dist --no-progress --no-plugins
+        run: composer require uma/ocular -W  --prefer-dist --no-progress --no-plugins
 
       - name: Upload coverage
         run: vendor/bin/ocular code-coverage:upload --format=php-clover tests/_output/coverage.xml
