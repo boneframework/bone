@@ -11,9 +11,10 @@ use function ob_start;
 
 class ExceptionTest extends Unit
 {
-    public function testShutdowError(): void
+    public function testShutdownError(): void
     {
         putenv('TEST_ERROR=true');
+        unset($_SERVER['SERVER_NAME']);
         $handler = ErrorHandler::getShutdownHandler();
         $this->assertInstanceOf(Closure::class, $handler);
         ob_start();
