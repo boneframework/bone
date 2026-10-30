@@ -47,7 +47,7 @@ class Application
         $session = SessionManager::getInstance();
 
         if (isset($_SERVER['SERVER_NAME'])) {
-            $sessionSettings = $this->container->has('session') ? $this->container->get('session') : 0;
+            $sessionSettings = \file_exists('config/session.php') ? (require 'config/session.php')['session'] : 0;
             SessionManager::sessionStart('app', $sessionSettings);
         }
 
